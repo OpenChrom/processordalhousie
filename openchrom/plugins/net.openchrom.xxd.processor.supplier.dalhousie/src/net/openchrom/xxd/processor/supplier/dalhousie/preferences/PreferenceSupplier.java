@@ -14,19 +14,21 @@ package net.openchrom.xxd.processor.supplier.dalhousie.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.processor.supplier.dalhousie.Activator;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
-	public static final String P_MY_SETTING = "mySetting";
-	public static final double DEF_MY_SETTING = 42.0d;
-	public static final double MY_SETTING_MIN = 1.0d;
-	public static final double MY_SETTING_MAX = 100.0d;
+	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
+	//
+	public static final String P_PATH_FILES = "pathFiles";
+	public static final String DEF_PATH_FILES = "";
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -54,7 +56,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public Map<String, String> getDefaultValues() {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
-		defaultValues.put(P_MY_SETTING, Double.toString(DEF_MY_SETTING));
+		defaultValues.put(P_PATH_FILES, DEF_PATH_FILES);
 		return defaultValues;
 	}
 
@@ -62,5 +64,32 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public IEclipsePreferences getPreferences() {
 
 		return getScopeContext().getNode(getPreferenceNode());
+	}
+
+	public static String getPathFiles() {
+
+		return getFilterPath(P_PATH_FILES, DEF_PATH_FILES);
+	}
+
+	public static void setPathFiles(String pathFiles) {
+
+		setFilterPath(P_PATH_FILES, pathFiles);
+	}
+
+	private static String getFilterPath(String key, String def) {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(key, def);
+	}
+
+	private static void setFilterPath(String key, String filterPath) {
+
+		try {
+			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+			eclipsePreferences.put(key, filterPath);
+			eclipsePreferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
 	}
 }

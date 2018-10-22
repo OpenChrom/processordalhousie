@@ -13,25 +13,17 @@ package net.openchrom.xxd.processor.supplier.dalhousie.ui.parts;
 
 import javax.inject.Inject;
 
-import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+
+import net.openchrom.xxd.processor.supplier.dalhousie.ui.swt.MeasurementObserverUI;
 
 public class MeasurementObserverPart {
 
+	@SuppressWarnings("unused")
+	private MeasurementObserverUI measurementObserverUI;
+
 	@Inject
 	public MeasurementObserverPart(Composite parent) {
-		initialize(parent);
-	}
-
-	private void initialize(Composite parent) {
-
-		parent.setLayout(new GridLayout(1, true));
-		parent.setBackground(DisplayUtils.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-		//
-		Label label = new Label(parent, SWT.NONE);
-		label.setText("Hello Liam.");
+		measurementObserverUI = new MeasurementObserverUI(parent);
 	}
 }
