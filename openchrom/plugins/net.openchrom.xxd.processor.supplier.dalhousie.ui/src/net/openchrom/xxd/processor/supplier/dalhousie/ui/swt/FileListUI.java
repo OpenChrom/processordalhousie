@@ -11,8 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.dalhousie.ui.swt;
 
+import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
@@ -46,7 +46,7 @@ public class FileListUI extends ExtendedTableViewer {
 
 		createColumns(FileLabelProvider.TITLES, FileLabelProvider.BOUNDS);
 		setLabelProvider(labelProvider);
-		setContentProvider(new ArrayContentProvider());
+		setContentProvider(new ListContentProvider());
 		setComparator(tableComparator);
 		setFilters(new ViewerFilter[]{listFilter});
 	}

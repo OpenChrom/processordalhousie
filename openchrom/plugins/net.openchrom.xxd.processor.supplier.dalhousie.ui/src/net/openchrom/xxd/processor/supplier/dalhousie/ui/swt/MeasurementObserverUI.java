@@ -12,12 +12,17 @@
 package net.openchrom.xxd.processor.supplier.dalhousie.ui.swt;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
+import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierEditorSupport;
 import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.part.support.SupplierEditorSupport;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -45,6 +50,10 @@ public class MeasurementObserverUI {
 	private Composite toolbarInfo;
 	private Composite toolbarSearch;
 	private FileListUI fileListUI;
+	private Button buttonObserving;
+	//
+	private ISupplierEditorSupport supplierEditorSupport = new SupplierEditorSupport(DataType.CSD);
+	private FileObserver fileObserver = new FileObserver(supplierEditorSupport);
 
 	public MeasurementObserverUI(Composite parent) {
 		initialize(parent);
@@ -58,11 +67,12 @@ public class MeasurementObserverUI {
 		toolbarInfo = createToolbarInfo(parent);
 		toolbarSearch = createToolbarSearch(parent);
 		fileListUI = createFileTable(parent);
+		buttonObserving = createButtonObserving(parent);
 		//
 		PartSupport.setCompositeVisibility(toolbarInfo, true);
 		PartSupport.setCompositeVisibility(toolbarSearch, false);
 		//
-		loadFileList();
+		updateWidgets();
 	}
 
 	private void createToolbarMain(Composite parent) {
@@ -135,6 +145,8 @@ public class MeasurementObserverUI {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
+				fileObserver.stopObservation();
+				//
 				IPreferencePage preferencePage = new PreferencePage();
 				preferencePage.setTitle("Dalhousie Underwater Experiment");
 				//
@@ -195,25 +207,74 @@ public class MeasurementObserverUI {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 
-				System.out.println("Open measurement manually.");
+				Object object = listUI.getStructuredSelection().getFirstElement();
+				if(object instanceof File) {
+					supplierEditorSupport.openEditor((File)object);
+				}
 			}
 		});
 		//
 		return listUI;
 	}
 
-	private void applySettings() {
+	private Button createButtonObserving(Composite parent) {
 
-		loadFileList();
+		Button button = new Button(parent, SWT.PUSH);
+		button.setToolTipText("Start/Stop the observation modus.");
+		button.setText("Start Observation");
+		button.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PROCESS_CONTROL, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				fileObserver.toggleObservation();
+				updateWidgets();
+			}
+		});
+		//
+		return button;
 	}
 
-	private void loadFileList() {
+	private void applySettings() {
 
-		File directory = new File(PreferenceSupplier.getPathFiles());
-		if(directory.exists()) {
-			fileListUI.setInput(directory.listFiles());
+		updateWidgets();
+	}
+
+	private void updateWidgets() {
+
+		buttonObserving.setText(fileObserver.isObservationRunning() ? "Stop Observation" : "Start Observation");
+		updateFileExplorer();
+	}
+
+	public void updateFileExplorer() {
+
+		List<File> files = getChromatogramFiles();
+		if(files.size() > 0) {
+			fileListUI.setInput(files);
 		} else {
 			fileListUI.setInput(null);
 		}
+	}
+
+	private List<File> getChromatogramFiles() {
+
+		List<File> files = new ArrayList<>();
+		//
+		if(supplierEditorSupport != null) {
+			File directory = new File(PreferenceSupplier.getPathFiles());
+			if(directory.exists()) {
+				for(File file : directory.listFiles()) {
+					if(supplierEditorSupport.isMatchMagicNumber(file)) {
+						if(supplierEditorSupport.isSupplierFile(file) || supplierEditorSupport.isSupplierFileDirectory(file)) {
+							files.add(file);
+						}
+					}
+				}
+			}
+		}
+		//
+		return files;
 	}
 }
