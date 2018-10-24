@@ -145,7 +145,9 @@ public class MeasurementObserverUI {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				fileObserver.stopObservation();
+				if( fileObserver.isObservationRunning() ) {
+					fileObserver.stopObservation();
+				}
 				//
 				IPreferencePage preferencePage = new PreferencePage();
 				preferencePage.setTitle("Dalhousie Underwater Experiment");
