@@ -147,6 +147,7 @@ public class MeasurementObserverUI {
 
 				if( fileObserver.isObservationRunning() ) {
 					fileObserver.stopObservation();
+					updateWidgets();
 				}
 				//
 				IPreferencePage preferencePage = new PreferencePage();
