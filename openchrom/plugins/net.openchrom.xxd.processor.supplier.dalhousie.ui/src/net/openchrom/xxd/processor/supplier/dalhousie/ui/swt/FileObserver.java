@@ -82,14 +82,7 @@ public class FileObserver {
 			@Override
 			public void run()
 			{
-				try
-				{
-					runFileObserver( directory );
-				}
-				catch(InterruptedException e)
-				{
-					logger.warn(e);
-				}
+				runFileObserver( directory, PreferenceSupplier.getRefreshRate() );	
 			}
 		});
 		
@@ -109,7 +102,7 @@ public class FileObserver {
 	 * 
 	 * 	directory: the directory to check for new chromatograms in
 	 */
-	private void runFileObserver( File directory ) throws InterruptedException
+	private void runFileObserver( File directory, int refreshRate )
 	{
 		File newChrom;
 		File currentChrom = null;
@@ -130,7 +123,14 @@ public class FileObserver {
 			}
 			
 			/* sleep for specified amount of time TODO: make a user setting for refresh frequency*/
-			Thread.sleep(5000);
+			try 
+			{
+				Thread.sleep( (long) refreshRate );
+			} 
+			catch(InterruptedException e)
+			{
+				logger.warn(e);
+			}
 		}
 	}
 	

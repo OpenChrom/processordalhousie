@@ -11,8 +11,10 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.dalhousie.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -32,9 +34,21 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
-	public void createFieldEditors() {
-
+	public void createFieldEditors() 
+	{
+		/* the file path to look for new chromatograms */
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_PATH_FILES, "Path Files", getFieldEditorParent()));
+		/* Refresh time */
+		IntegerFieldEditor fileRefreshRate = 
+				new IntegerFieldEditor(
+										PreferenceSupplier.FILE_REFRESH_RATE_NAME, 			/* name */
+										PreferenceSupplier.FILE_REFRESH_RATE_LABEL_TEXT, 	/* label */
+										getFieldEditorParent());
+		
+		fileRefreshRate.setValidRange(	PreferenceSupplier.FILE_REFRESH_RATE_MIN, 			/* minimum */
+										PreferenceSupplier.FILE_REFRESH_RATE_MAX);			/* maximum */
+		
+		addField(fileRefreshRate);
 	}
 
 	/*

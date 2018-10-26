@@ -30,6 +30,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_PATH_FILES = "pathFiles";
 	public static final String DEF_PATH_FILES = "";
 	//
+	public static final String FILE_REFRESH_RATE_NAME 		= "FileRefreshRate";
+	public static final String FILE_REFRESH_RATE_LABEL_TEXT = "File Refresh Rate (ms)";
+	public static final int FILE_REFRESH_RATE_DEFAULT		= 5000; 	/* default 5s */
+	public static final int FILE_REFRESH_RATE_MIN 			= 1000; 	/* minimum 1s for now */
+	public static final int FILE_REFRESH_RATE_MAX 			= 10000; 	/* maximum 10s for now */
+	//
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -57,6 +63,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		defaultValues.put(P_PATH_FILES, DEF_PATH_FILES);
+		defaultValues.put(FILE_REFRESH_RATE_NAME, Integer.toString(FILE_REFRESH_RATE_DEFAULT));
 		return defaultValues;
 	}
 
@@ -69,6 +76,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static String getPathFiles() {
 
 		return getFilterPath(P_PATH_FILES, DEF_PATH_FILES);
+	}
+	
+	public static int getRefreshRate()
+	{
+		String refreshRateStr = getFilterPath(FILE_REFRESH_RATE_NAME, Integer.toString(FILE_REFRESH_RATE_DEFAULT));
+		return Integer.parseInt(refreshRateStr);
 	}
 
 	public static void setPathFiles(String pathFiles) {
