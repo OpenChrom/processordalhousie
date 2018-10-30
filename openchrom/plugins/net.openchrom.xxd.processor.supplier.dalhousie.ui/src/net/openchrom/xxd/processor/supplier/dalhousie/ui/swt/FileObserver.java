@@ -37,7 +37,7 @@ public class FileObserver {
 
 	public FileObserver(ISupplierEditorSupport supplierEditorSupport) {
 		this.supplierEditorSupport = supplierEditorSupport;
-		this.ftpConnection = new FtpClient("192.168.4.73", 21, "anonymous", "" );
+		this.ftpConnection = new FtpClient();
 	}
 
 	public boolean isObservationRunning() {
@@ -96,15 +96,21 @@ public class FileObserver {
 			return false;
 		}
 		
+		/* Setup the FTP configuration */
+		ftpConnection.setServer(PreferenceSupplier.getFtpServer());
+		ftpConnection.setUser(PreferenceSupplier.getFtpUser());
+		ftpConnection.setPort(PreferenceSupplier.getFtpPort());
+		ftpConnection.setPassword(PreferenceSupplier.getFtpPass());
+		
 		/* open the FTP connection and move to the directory */
 		try 
 		{
 			ftpConnection.open();
-			ftpConnection.changeDir("/oc_test");
+			ftpConnection.changeDir(PreferenceSupplier.getFtpDir());
 		}
 		catch(IOException e) 
 		{
-			logger.warn(e); // TODO: warn user
+			logger.warn(e); // TODO: alert user
 			return false;
 		}
 		

@@ -15,6 +15,7 @@ import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEdi
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -36,8 +37,9 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() 
 	{
-		/* the file path to look for new chromatograms */
+		/* local file path */
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_PATH_FILES, "Path Files", getFieldEditorParent()));
+		
 		/* Refresh time */
 		IntegerFieldEditor fileRefreshRate = 
 				new IntegerFieldEditor(
@@ -49,6 +51,30 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 										PreferenceSupplier.FILE_REFRESH_RATE_MAX);			/* maximum */
 		
 		addField(fileRefreshRate);
+		
+		/* FTP Server */
+		addField(new StringFieldEditor(	PreferenceSupplier.FTP_SERVER_NAME, 
+										PreferenceSupplier.FTP_SERVER_LABEL, 
+										getFieldEditorParent() ));
+		/* FTP User */
+		addField(new StringFieldEditor(	PreferenceSupplier.FTP_USER_NAME, 
+										PreferenceSupplier.FTP_USER_LABEL, 
+										getFieldEditorParent() ));
+		
+		/* FTP Port */
+		addField(new IntegerFieldEditor(PreferenceSupplier.FTP_PORT_NAME, 
+										PreferenceSupplier.FTP_PORT_LABEL, 
+										getFieldEditorParent() ));
+		
+		/* FTP Password */
+		addField(new StringFieldEditor(	PreferenceSupplier.FTP_PASS_NAME, 
+										PreferenceSupplier.FTP_PASS_LABEL, 
+										getFieldEditorParent() ));
+		
+		/* FTP Directory */
+		addField(new StringFieldEditor(	PreferenceSupplier.FTP_DIR_NAME, 
+										PreferenceSupplier.FTP_DIR_LABEL, 
+										getFieldEditorParent() ));
 	}
 
 	/*

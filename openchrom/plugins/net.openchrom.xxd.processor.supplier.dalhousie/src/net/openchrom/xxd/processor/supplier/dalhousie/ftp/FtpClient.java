@@ -27,11 +27,19 @@ import org.apache.commons.net.ftp.FTPReply;
 
 public class FtpClient {
 
-    private final String server;
-    private final int port;
-    private final String user;
-    private final String password;
+    private String server;
+	private int port;
+    private String user;
+    private String password;
     private FTPClient ftp;
+    
+    public FtpClient()
+    {
+    	this.server = "";
+        this.port = 21;
+        this.user = "anonymous";
+        this.password = "";
+    }
 
     public FtpClient(String server, int port, String user, String password) {
         this.server = server;
@@ -80,4 +88,28 @@ public class FtpClient {
     {
     	return ftp.changeWorkingDirectory(path);
     }
+    
+    /* Setters */
+	public void setServer(String server) {
+		
+		this.server = server;
+	}
+
+	
+	public void setPort(int port) {
+	
+		this.port = port;
+	}
+
+	
+	public void setUser(String user) {
+	
+		this.user = user;
+	}
+
+	
+	public void setPassword(String password) {
+	
+		this.password = password;
+	}
 }
