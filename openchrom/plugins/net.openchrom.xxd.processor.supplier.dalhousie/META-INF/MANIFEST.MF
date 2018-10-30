@@ -16,4 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.processor.supplier.dalhousie.core,
+ net.openchrom.xxd.processor.supplier.dalhousie.ftp,
  net.openchrom.xxd.processor.supplier.dalhousie.preferences
+Bundle-ClassPath: lib/commons-net-3.6.jar,
+ .
