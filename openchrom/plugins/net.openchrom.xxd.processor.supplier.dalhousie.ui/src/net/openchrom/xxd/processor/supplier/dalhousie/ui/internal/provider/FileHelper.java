@@ -12,6 +12,7 @@
 package net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,13 +74,17 @@ public class FileHelper
 	{
 		boolean returnVal;
 		
+		/* move both string to the last '/' */
+		oldStr = getFileNameFromPathName(oldStr);
+		newStr = getFileNameFromPathName(newStr);
+
 		/* new string is valid */
-		if( newStr == null || newStr.matches(regexCheck) )
+		if( newStr == null || !newStr.matches(regexCheck) )
 		{
 			returnVal = false;
 		}
 		/* check if old string is valid */
-		else if( oldStr == null || oldStr.matches(regexCheck) )
+		else if( oldStr == null || !oldStr.matches(regexCheck) )
 		{
 			returnVal = true;
 		}
@@ -101,8 +106,8 @@ public class FileHelper
 		boolean returnVal = false;
 		
 		/* get the date strings */
-		oldDateStr = oldDateStr.substring(0,20);
-		newDateStr = newDateStr.substring(0,20);
+		oldDateStr = oldDateStr.substring(0,19);
+		newDateStr = newDateStr.substring(0,19);
 		
 		/* initialize the date parser */
 		parser = new SimpleDateFormat(DATE_FORMAT);
@@ -124,9 +129,25 @@ public class FileHelper
 		return returnVal;
 	}
 	
+	public static String getFileNameFromPathName(String pathName)
+	{
+		String fileName = null;
+		
+		if( pathName != null )
+		{
+			fileName = Paths.get(pathName).getFileName().toString();
+		}
+		
+		return fileName;
+	}
+	
 	public static boolean isValidChromName(String str)
 	{
 		return str.matches(FILE_REGEX);
 	}
 	
+	public static boolean isValidChromFolderName(String str)
+	{
+		return str.matches(FOLDER_REGEX);
+	}
 }

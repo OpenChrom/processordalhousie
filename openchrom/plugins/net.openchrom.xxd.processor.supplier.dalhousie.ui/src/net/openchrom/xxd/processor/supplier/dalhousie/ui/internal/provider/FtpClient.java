@@ -67,8 +67,8 @@ public class FtpClient {
         ftp.disconnect();
     }
 
-    public Collection<String> listFiles(String path) throws IOException {
-        FTPFile[] files = ftp.listFiles(path);
+    public Collection<String> listFiles() throws IOException {
+        FTPFile[] files = ftp.listFiles("");
 
         return Arrays.stream(files)
                 .map(FTPFile::getName)

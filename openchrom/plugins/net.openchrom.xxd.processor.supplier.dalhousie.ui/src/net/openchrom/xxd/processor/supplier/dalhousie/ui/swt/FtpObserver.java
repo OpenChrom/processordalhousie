@@ -15,12 +15,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.openchrom.xxd.processor.supplier.dalhousie.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider.FileHelper;
 import net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider.FtpClient;
 
 public class FtpObserver 
 {	
+	private static final Logger logger = Logger.getLogger(FtpObserver.class);
+	
 	private FtpClient ftpConnection;
 	
 	/* constructor */
@@ -68,7 +72,7 @@ public class FtpObserver
 			if( currentChrom == null  || FileHelper.isNewerFileName( currentChrom.getName(), newestFtpFile ) )
 			{
 				/* if it does download it */
-				ftpConnection.downloadFile( newestFtpFile, localDir.getPath() + '\\' + newestFtpFile );
+				ftpConnection.downloadFile( newestFtpFile, localDir.getPath() + '\\' + FileHelper.getFileNameFromPathName(newestFtpFile) );
 				/* indicate a file was downloaded */
 				returnVal = true;
 			}
@@ -79,29 +83,74 @@ public class FtpObserver
 	
 	/*  
 	 * Get the file list on the FTP server and return the newest file name
+	 * The Chromatogram files on the FTP server are all in a folder with a date stamp as the tile
 	 */
 	private String getNewestFileOnFTP() throws IOException
 	{
 		Collection<String> files;
-		String newestFileName = null;
+		String newestFolderName = null;
+		String newestChromName = null, chromInFolder;
 		
 		/* get the file list of the current directory */
-		files = ftpConnection.listFiles("");
+		files = ftpConnection.listFiles();
 		
-		/* check all the files */
+		/* check all the files and folders */
 		for( String str: files )
 		{
-			/* check the file name is in the correct format */
-			if( FileHelper.isValidChromName(str) )
+			/* check the file or folder name is a valid chromatogram folder */
+			if( FileHelper.isValidChromFolderName(str) )
 			{
-				/* check if its a newer file */
-				if( newestFileName == null || FileHelper.isNewerFileName(newestFileName, str) )
+				/* check if its a newer folder */
+				if( newestFolderName == null || FileHelper.isNewerFolderName(newestFolderName, str) )
 				{
-					newestFileName = str;
+					/* get the chromatogram file in the folder */
+					chromInFolder = getChromFromFolder(str);
+					
+					/* check if it had a valid chromatogram in it */
+					if( chromInFolder != null )
+					{
+						newestFolderName = str;
+						newestChromName = newestFolderName + "/" + chromInFolder;
+					}
 				}
 			}
 		}
 		
-		return newestFileName;
+		return newestChromName;
+	}
+	
+	private String getChromFromFolder(String folderName)
+	{
+		Collection<String> files;
+		String chromName = null;
+
+		try 
+		{
+			/* move into directory */
+			ftpConnection.changeDir(folderName);
+			/* list all files in the directory */
+			files = ftpConnection.listFiles();
+			
+			/* check all files for a valid chromatogram */
+			for(String file : files)
+			{
+				/* check if file is valid */
+				if( FileHelper.isValidChromName(file) )
+				{
+					/* If there is one return it */
+					chromName = file;
+					break;
+				}
+			}
+			
+			/* move back out of the directory */
+			ftpConnection.changeDir("..");
+		}
+		catch(IOException e)
+		{
+			logger.warn(e);
+		}
+		
+		return chromName;
 	}
 }
