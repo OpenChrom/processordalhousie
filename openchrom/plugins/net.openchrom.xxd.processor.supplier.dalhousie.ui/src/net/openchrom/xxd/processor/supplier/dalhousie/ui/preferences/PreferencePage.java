@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.dalhousie.ui.preferences;
 
-import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;

@@ -9,7 +9,7 @@
  * Contributors:
  * oceancerc - initial API and implementation
 *******************************************************************************/
-package net.openchrom.xxd.processor.supplier.dalhousie.ftp;
+package net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider;
 
 import java.io.File;
 import java.io.FileInputStream;
