@@ -18,7 +18,7 @@ import java.util.Date;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 
-public class FileHelper 
+public class FileHelper
 {
 	private static final Logger logger = Logger.getLogger(FileHelper.class);
 	
