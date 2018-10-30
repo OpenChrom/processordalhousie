@@ -34,11 +34,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String FILE_REFRESH_RATE_LABEL_TEXT = "File Refresh Rate (ms)";
 	public static final int FILE_REFRESH_RATE_DEFAULT		= 5000; 	/* default 5s */
 	public static final int FILE_REFRESH_RATE_MIN 			= 1000; 	/* minimum 1s for now */
-	public static final int FILE_REFRESH_RATE_MAX 			= 10000; 	/* maximum 10s for now */
-	/* FTP Server */
-	public static final String FTP_SERVER_NAME		= "FtpServerName";
-	public static final String FTP_SERVER_LABEL		= "FTP Server";
-	public static final String FTP_SERVER_DEFAULT	= "192.168.4.73";
+	public static final int FILE_REFRESH_RATE_MAX 			= 100000; 	/* maximum 100s for now */
+	/* Server */
+	public static final String SERVER_NAME			= "FtpServerName";
+	public static final String SERVER_LABEL			= "FTP Server";
+	public static final String SERVER_DEFAULT		= "192.168.4.73";
 	/* FTP User */
 	public static final String FTP_USER_NAME		= "FtpUser";
 	public static final String FTP_USER_LABEL		= "FTP User";
@@ -55,6 +55,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String FTP_DIR_NAME			= "FtpDir";
 	public static final String FTP_DIR_LABEL		= "FTP Directory";
 	public static final String FTP_DIR_DEFAULT		= "/";
+	/* UDP CLI port */
+	public static final String UDP_CLI_PORT_NAME	= "UdpCliPort";
+	public static final String UDP_CLI_PORT_LABEL	= "UDP CLI Port";
+	public static final int UDP_CLI_PORT_DEFAULT	= 5001;
+	
 	
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -86,8 +91,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_PATH_FILES, DEF_PATH_FILES);
 		/* file refresh rate */
 		defaultValues.put(FILE_REFRESH_RATE_NAME, Integer.toString(FILE_REFRESH_RATE_DEFAULT));
-		/* FTP server */
-		defaultValues.put(FTP_SERVER_NAME, FTP_SERVER_DEFAULT);
+		/* server */
+		defaultValues.put(SERVER_NAME, SERVER_DEFAULT);
 		/* FTP User */
 		defaultValues.put(FTP_USER_NAME, FTP_USER_DEFAULT);
 		/* FTP Port */
@@ -96,6 +101,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(FTP_PASS_NAME, FTP_PASS_DEFAULT);
 		/* FTP Directory */
 		defaultValues.put(FTP_DIR_NAME, FTP_DIR_DEFAULT);
+		/* UDP CLI Port */
+		defaultValues.put(UDP_CLI_PORT_NAME, Integer.toString(UDP_CLI_PORT_DEFAULT));
 		
 		return defaultValues;
 	}
@@ -116,9 +123,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return Integer.parseInt( getFilterPath(FILE_REFRESH_RATE_NAME, Integer.toString(FILE_REFRESH_RATE_DEFAULT)) );
 	}
 	
-	public static String getFtpServer()
+	public static String getServer()
 	{
-		return getFilterPath(FTP_SERVER_NAME, FTP_SERVER_DEFAULT);
+		return getFilterPath(SERVER_NAME, SERVER_DEFAULT);
 	}
 	
 	public static String getFtpUser()
@@ -139,6 +146,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static String getFtpDir()
 	{
 		return getFilterPath(FTP_DIR_NAME, FTP_DIR_DEFAULT);
+	}
+	
+	public static int getUdpCliPort()
+	{
+		return Integer.parseInt( getFilterPath(UDP_CLI_PORT_NAME, Integer.toString(UDP_CLI_PORT_DEFAULT)) );
 	}
 
 	public static void setPathFiles(String pathFiles) {

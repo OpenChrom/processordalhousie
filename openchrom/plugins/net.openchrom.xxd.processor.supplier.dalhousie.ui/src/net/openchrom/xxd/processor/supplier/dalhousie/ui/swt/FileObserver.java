@@ -13,12 +13,16 @@ package net.openchrom.xxd.processor.supplier.dalhousie.ui.swt;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierEditorSupport;
 import org.eclipse.swt.widgets.Display;
 
 import net.openchrom.xxd.processor.supplier.dalhousie.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider.FileHelper;
+import net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider.UdpCommandClient;
 
 public class FileObserver {
 
@@ -30,10 +34,23 @@ public class FileObserver {
 	private FtpObserver ftpObserver;
 	
 	private File currentChrom;
+	
+	private UdpCommandClient udpClient;
 
 	public FileObserver(ISupplierEditorSupport supplierEditorSupport) {
 		this.supplierEditorSupport = supplierEditorSupport;
 		this.ftpObserver = new FtpObserver();
+		
+		/* Start the UDP thread */
+		try
+		{
+			udpClient = new UdpCommandClient();
+			udpClient.start();
+		}
+		catch(SocketException | UnknownHostException e)
+		{
+			logger.warn(e);
+		}
 	}
 
 	public boolean isObservationRunning()

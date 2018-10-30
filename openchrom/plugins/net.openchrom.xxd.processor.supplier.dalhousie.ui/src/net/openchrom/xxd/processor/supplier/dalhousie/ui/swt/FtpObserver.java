@@ -36,7 +36,7 @@ public class FtpObserver
 	public void open() throws IOException
 	{
 		/* Setup the FTP configuration */
-		ftpConnection.setServer(PreferenceSupplier.getFtpServer());
+		ftpConnection.setServer(PreferenceSupplier.getServer());
 		ftpConnection.setUser(PreferenceSupplier.getFtpUser());
 		ftpConnection.setPort(PreferenceSupplier.getFtpPort());
 		ftpConnection.setPassword(PreferenceSupplier.getFtpPass());

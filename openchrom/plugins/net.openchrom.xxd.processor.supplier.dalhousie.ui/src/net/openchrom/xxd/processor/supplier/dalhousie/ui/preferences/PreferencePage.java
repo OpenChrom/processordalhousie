@@ -51,9 +51,9 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		
 		addField(fileRefreshRate);
 		
-		/* FTP Server */
-		addField(new StringFieldEditor(	PreferenceSupplier.FTP_SERVER_NAME, 
-										PreferenceSupplier.FTP_SERVER_LABEL, 
+		/* Server */
+		addField(new StringFieldEditor(	PreferenceSupplier.SERVER_NAME, 
+										PreferenceSupplier.SERVER_LABEL, 
 										getFieldEditorParent() ));
 		/* FTP User */
 		addField(new StringFieldEditor(	PreferenceSupplier.FTP_USER_NAME, 
@@ -73,6 +73,11 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		/* FTP Directory */
 		addField(new StringFieldEditor(	PreferenceSupplier.FTP_DIR_NAME, 
 										PreferenceSupplier.FTP_DIR_LABEL, 
+										getFieldEditorParent() ));
+		
+		/* UDP CLI Port */
+		addField(new IntegerFieldEditor(PreferenceSupplier.UDP_CLI_PORT_NAME,
+										PreferenceSupplier.UDP_CLI_PORT_LABEL,
 										getFieldEditorParent() ));
 	}
 
