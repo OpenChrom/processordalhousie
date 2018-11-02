@@ -12,7 +12,6 @@
 package net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -22,19 +21,24 @@ import org.eclipse.chemclipse.logging.core.Logger;
 
 public class UdpCommandClientRx implements Runnable
 {
-final static Logger logger = Logger.getLogger(UdpCommandClientTx.class);
+	final static Logger logger = Logger.getLogger(UdpCommandClientTx.class);
 
 	private DatagramSocket clientSocket;
-	
-	private OutputStreamWriter userOutput;
 
     private byte[] inData;
+    
+    I writer;
+    
+    public interface I
+    {
+    	public void writeStr(String str);
+    }
 	
     /* constructor */
-	public UdpCommandClientRx(DatagramSocket socket) throws SocketException, UnknownHostException
+	public UdpCommandClientRx(DatagramSocket socket, I writer) throws SocketException, UnknownHostException
 	{
 		this.clientSocket = socket;
-		this.userOutput = new OutputStreamWriter(System.out);
+		this.writer = writer;
 	}
 	
 	public void shutdown()
@@ -55,7 +59,7 @@ final static Logger logger = Logger.getLogger(UdpCommandClientTx.class);
 			{
 				clientSocket.receive(in);
 				modifiedSentence = new String( in.getData() );
-				userOutput.write("\n\rServer >\n" + modifiedSentence);
+				writer.writeStr(modifiedSentence);
 			}
 			catch (IOException e)
 			{

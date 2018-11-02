@@ -6,12 +6,14 @@
       <children xsi:type="basic:PartSashContainer" xmi:id="_9p9YgNLiEeiHc_VxGN1JeQ" elementId="net.openchrom.xxd.processor.supplier.dalhousie.ui.partsashcontainer.0" horizontal="true">
         <children xsi:type="basic:PartStack" xmi:id="__O0dgNLiEeiHc_VxGN1JeQ" elementId="net.openchrom.xxd.processor.supplier.dalhousie.ui.partstack.0" containerData="2500">
           <children xsi:type="advanced:Placeholder" xmi:id="_9B19sNLkEeiHc_VxGN1JeQ" elementId="net.openchrom.xxd.processor.supplier.dalhousie.ui.placeholder.0" ref="_gShH8NLjEeiHc_VxGN1JeQ"/>
+          <children xsi:type="advanced:Placeholder" xmi:id="_Uzc3wN4UEei0U7gTUWc-jQ" elementId="net.openchrom.xxd.processor.supplier.dalhousie.ui.placeholder.1" ref="_XwJzEN4MEei0U7gTUWc-jQ"/>
         </children>
         <children xsi:type="advanced:Placeholder" xmi:id="_B_M6cNLjEeiHc_VxGN1JeQ" elementId="org.eclipse.ui.editorss" ref="_7TTDINLiEeiHc_VxGN1JeQ"/>
       </children>
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_sYG2MNLiEeiHc_VxGN1JeQ" featurename="sharedElements" parentElementId="org.eclipse.chemclipse.rcp.app.ui.trimmedwindow.main">
-    <elements xsi:type="basic:Part" xmi:id="_gShH8NLjEeiHc_VxGN1JeQ" elementId="net.openchrom.xxd.processor.supplier.dalhousie.ui.part.measurementObserver" contributionURI="bundleclass://net.openchrom.xxd.processor.supplier.dalhousie.ui/net.openchrom.xxd.processor.supplier.dalhousie.ui.parts.MeasurementObserverPart" label="Measurement Observer" iconURI="platform:/plugin/net.openchrom.xxd.processor.supplier.dalhousie.ui/icons/16x16/chromatogram.gif"/>
+    <elements xsi:type="basic:Part" xmi:id="_XwJzEN4MEei0U7gTUWc-jQ" elementId="net.openchrom.xxd.processor.supplier.dalhousie.ui.part.commandConnection" contributionURI="bundleclass://net.openchrom.xxd.processor.supplier.dalhousie.ui/net.openchrom.xxd.processor.supplier.dalhousie.ui.parts.CommandConnectionPart" label="Command Connection" iconURI="platform:/plugin/net.openchrom.xxd.processor.supplier.dalhousie.ui/icons/16x16/chromatogram.gif"/>
+    <elements xsi:type="basic:Part" xmi:id="_gShH8NLjEeiHc_VxGN1JeQ" elementId="net.openchrom.xxd.processor.supplier.dalhousie.ui.part.measurementConnection" contributionURI="bundleclass://net.openchrom.xxd.processor.supplier.dalhousie.ui/net.openchrom.xxd.processor.supplier.dalhousie.ui.parts.MeasurementObserverPart" label="Measurement Observer" iconURI="platform:/plugin/net.openchrom.xxd.processor.supplier.dalhousie.ui/icons/16x16/chromatogram.gif"/>
   </fragments>
 </fragment:ModelFragments>

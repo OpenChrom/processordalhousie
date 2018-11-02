@@ -11,15 +11,13 @@
 *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.concurrent.BlockingQueue;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 
@@ -27,8 +25,7 @@ public class UdpCommandClientTx implements Runnable
 {
 	final static Logger logger = Logger.getLogger(UdpCommandClientTx.class);
 	
-	private BufferedReader userInput;
-	private OutputStreamWriter userOutput;
+	private final BlockingQueue<String> queue;
 	
 	private DatagramSocket clientSocket;
 	private InetAddress IPAddress;
@@ -36,14 +33,13 @@ public class UdpCommandClientTx implements Runnable
 	
 	private byte[] outData;
 
-	public UdpCommandClientTx(DatagramSocket socket, String address, int port) throws SocketException, UnknownHostException
+	public UdpCommandClientTx(DatagramSocket socket, String address, int port, BlockingQueue<String> dataQueue) throws SocketException, UnknownHostException
 	{
 		this.clientSocket 	= socket;
 		this.IPAddress 		= InetAddress.getByName(address);
 		this.port 			= port;
 		
-		this.userInput 	= new BufferedReader(new InputStreamReader(System.in));
-		this.userOutput = new OutputStreamWriter(System.out);
+		this.queue 	= dataQueue;
 	}
 	
 	public void shutdown()
@@ -53,19 +49,22 @@ public class UdpCommandClientTx implements Runnable
 	
 	public void run() 
 	{
+		String str;
 		while(true)
 		{
 			outData = new byte[1024];
 			try 
 			{
-				userOutput.write("\r\n> ");
-				String sentence = userInput.readLine() + '\n';
-				outData = sentence.getBytes();
-
+				/* Read data from the queue */
+				str = queue.take();
+				outData = str.getBytes();
+			
+				/* Send the data */
 				DatagramPacket out = new DatagramPacket(outData, outData.length, IPAddress, port);
 				clientSocket.send(out);
+				
 			}
-			catch (IOException e)
+			catch (IOException | InterruptedException e)
 			{
 				logger.warn(e);
 			}
