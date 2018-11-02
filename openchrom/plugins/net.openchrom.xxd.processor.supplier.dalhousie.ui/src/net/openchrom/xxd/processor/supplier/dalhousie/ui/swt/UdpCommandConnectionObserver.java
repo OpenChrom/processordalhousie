@@ -42,8 +42,12 @@ public class UdpCommandConnectionObserver
 	
 	private BlockingQueue<String> sendQueue;
 	
+	private I writer;
+	
 	public UdpCommandConnectionObserver(I writer) throws SocketException, UnknownHostException
 	{
+		this.writer = writer;
+		
 		/* Create the socket */
 		clientSocket = new DatagramSocket();
 		/* Create the receiving client */
@@ -69,22 +73,22 @@ public class UdpCommandConnectionObserver
 	}
 	
 	
-	public void sendHelpCommand()
+	public void sendHelp()
 	{
 		sendCommand(HELP);
 	}
 	
-	public void sendStatusCommand()
+	public void sendStatus()
 	{
 		sendCommand(STATUS);
 	}
 	
-	public void sendGoCommand()
+	public void sendGo()
 	{
 		sendCommand(GO);
 	}
 	
-	public void sendIpConfigCommand()
+	public void sendIpConfig()
 	{
 		sendCommand(IP_CONFIG);
 	}
@@ -98,6 +102,7 @@ public class UdpCommandConnectionObserver
 	{
 		try
 		{
+			writer.writeStr(">sending: " + str);
 			sendQueue.put(str + DELIM);
 		}
 		catch(InterruptedException e)

@@ -19,13 +19,17 @@ import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierEditorSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.part.support.SupplierEditorSupport;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider.UdpCommandClientRx;
@@ -34,11 +38,9 @@ public class CommandConnectionUI
 {
 	private static final Logger logger = Logger.getLogger(CommandConnectionUI.class);
 	
-	
-	@SuppressWarnings("unused")
-	private Button goButton;
-	
 	private Text responseBox;
+	
+	private Text commandEntry;
 	
 	@SuppressWarnings("unused")
 	private ISupplierEditorSupport supplierEditorSupport = new SupplierEditorSupport(DataType.CSD);
@@ -53,8 +55,12 @@ public class CommandConnectionUI
 	private void initialize(Composite parent)
 	{
 		parent.setLayout(new GridLayout(1, true));
-		goButton = createGoButton(parent);
+		
+		/* Set the command buttons */
+		createCommandButtons(parent);
+		
 		responseBox = createResponseBox(parent);
+		
 		
 		/* Start the UDP thread */
 		try
@@ -64,40 +70,84 @@ public class CommandConnectionUI
 		}
 		catch(SocketException | UnknownHostException e)
 		{
-			logger.warn(e);
+			logger.warn(e); // TODO: warn the user
 		}
 	}
 	
-	private Button createGoButton(Composite parent)
+	private void createCommandButtons(Composite parent)
 	{
-		/* create the button */
-		Button button = createStandardButton("Go", parent);
+		/* set the grid layout */
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalAlignment = SWT.END;
+		
+		/* create a child */
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayoutData(gridData);
+		composite.setLayout(new GridLayout(4, true));
+		
+		/* Go button */
+		createStandardButton("Go", 			()->commandConnection.sendGo(), 		composite);
+		/* Help button */
+		createStandardButton("Help", 		()->commandConnection.sendHelp(), 		composite);
+		/* status button */
+		createStandardButton("Status", 		()->commandConnection.sendStatus(), 	composite);
+		/* Ip-config */
+		createStandardButton("Ifconfig", 	()->commandConnection.sendIpConfig(), 	composite);
+		/* Add a custom command section */
+		createCustomCommandSection(composite);
+	}
+	
+	private void createCustomCommandSection(Composite parent)
+	{
+		/* Add a label */
+		Label l = new Label(parent, SWT.NONE);
+		l.setText("Custom command: ");
+		/* Add the text field */
+		commandEntry = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		/* Set the background color */
+		commandEntry.setBackground(new Color (Display.getCurrent(), 255, 255, 255));
+		/* Add a key listener to send the command when enter is pressed */
+		commandEntry.addKeyListener(new KeyAdapter()
+		{
+			public void keyPressed(KeyEvent event)
+			{
+				if(event.keyCode == SWT.CR)
+				{
+					sendCustomCommand();
+				}
+			}
+		});
+		
+		createStandardButton("Send", ()->sendCustomCommand(), parent);
+		
+	}
+	
+	private void sendCustomCommand()
+	{
+		commandConnection.sendCustomCommand(commandEntry.getText());
+		commandEntry.setText("");
+	}
+	
+	private Button createStandardButton(String btnTxt, ButtonAction action, Composite parent)
+	{
+		/* Create the button */
+		Button b = new Button(parent, SWT.PUSH);
+		/* Add the text */
+		b.setText(btnTxt);
+		/* Set the layout */
+		b.setLayoutData(new GridData(GridData.CENTER));
 		/* add the button listener */
-		button.addSelectionListener(new SelectionAdapter()
+		b.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				commandConnection.sendGoCommand();
+				action.performAction();
 			}
 		});
-
-		return button;
-	}
-	
-	
-	
-	private Button createStandardButton(String str, Composite parent)
-	{
-		Button b = new Button(parent, SWT.PUSH);
-		
-		b.setText(str);
-		
-		b.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		return b;
 	}
-	
 	
 
 	private Text createResponseBox(Composite parent)
@@ -115,23 +165,26 @@ public class CommandConnectionUI
 	
 	UdpCommandClientRx.I writeText = (str) -> 
 	{
-		class OneShotTask implements Runnable {
-	        String str;
-	        OneShotTask(String s) { str = s; }
-	        public void run() {
-	        	updateResponseBox(str);
-	        }
-	    }
-		
-		Display.getDefault().syncExec(new OneShotTask(str));
-		
+		Display.getDefault().syncExec(new AddCommandTxt(str));	
 	};
 	
-	private void updateResponseBox(String str)
+	private interface ButtonAction
 	{
-		str.replaceAll("\r\n", responseBox.getLineDelimiter());
-		
-		responseBox.append(str);
+		public void performAction();
 	}
+	
+	private class AddCommandTxt implements Runnable
+	{
+        String str;
+        AddCommandTxt(String s)
+        {
+        	str = s;
+        }
+        public void run()
+        {
+        	str.replaceAll("\r\n", responseBox.getLineDelimiter());
+    		responseBox.append(str);
+        }
+    }
 	
 }

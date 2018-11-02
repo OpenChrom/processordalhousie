@@ -52,7 +52,7 @@ public class FileObserver {
 	}
 	
 	/*
-	 * stops the thread running the file observer
+	 * stops the thread running the file observer and closes the FTP connection
 	 */
 	public void stopObservation() 
 	{
@@ -61,6 +61,16 @@ public class FileObserver {
 			/* stop the thread */
 			thread.interrupt();
 			thread = null;
+			
+			/* close the connection */
+			try
+			{
+				ftpObserver.close();
+			}
+			catch(IOException e)
+			{
+				logger.warn(e);
+			}
 		}
 	}
 
@@ -110,6 +120,8 @@ public class FileObserver {
 				}
 			}
 		});
+		
+		
 		
 		/* Start the thread */
 		thread.start();
