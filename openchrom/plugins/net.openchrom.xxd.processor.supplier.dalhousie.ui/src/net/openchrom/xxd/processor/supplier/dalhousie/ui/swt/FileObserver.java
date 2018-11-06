@@ -133,7 +133,7 @@ public class FileObserver {
 	/* 
 	 * Runs the file observer:
 	 * - download any newer chromatogram from the FTP server to the local directory
-	 * - check for any new chromatogram in the local file direcrtory, 
+	 * - check for any new chromatogram in the local file directory, 
 	 * - if there is one display it,
 	 * - sleep for specified amount of time
 	 * - repeat

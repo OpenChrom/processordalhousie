@@ -102,7 +102,7 @@ public class UdpCommandConnectionObserver
 	{
 		try
 		{
-			writer.writeStr(">sending: " + str);
+			writer.writeStr(">" + str);
 			sendQueue.put(str + DELIM);
 		}
 		catch(InterruptedException e)
