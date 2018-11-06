@@ -152,7 +152,17 @@ public class FileObserver {
 			}
 			catch(IOException e) 
 			{
-				logger.warn(e);// TODO: warn user, probably end thread or something
+				/* try to reconnect */
+				try
+				{
+					ftpObserver.open();
+				}
+				catch(IOException e1)
+				{
+					logger.warn(e);
+					logger.warn(e1);
+					// TODO: user alert 
+				}
 			}
 			
 			/* get the newest chromatogram in the directory, checked against the current one */
