@@ -87,12 +87,12 @@ public class CommandConnectionUI
 		
 		/* Go button */
 		createStandardButton("Go", 			()->commandConnection.sendGo(), 		composite);
+		/* Ip-config */
+		createStandardButton("Stop", 		()->commandConnection.sendStop(), 		composite);
 		/* Help button */
 		createStandardButton("Help", 		()->commandConnection.sendHelp(), 		composite);
 		/* status button */
 		createStandardButton("Status", 		()->commandConnection.sendStatus(), 	composite);
-		/* Ip-config */
-		createStandardButton("Ifconfig", 	()->commandConnection.sendIpConfig(), 	composite);
 		/* Add a custom command section */
 		createCustomCommandSection(composite);
 	}

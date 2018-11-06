@@ -29,6 +29,7 @@ public class UdpCommandConnectionObserver
 	private static final Logger logger = Logger.getLogger(UdpCommandConnectionObserver.class);
 	
 	private static final String GO			= "go";
+	private static final String STOP		= "stop";
 	private static final String HELP 		= "help";
 	private static final String STATUS 		= "status";
 	private static final String IP_CONFIG 	= "ip-config";
@@ -72,6 +73,15 @@ public class UdpCommandConnectionObserver
 		
 	}
 	
+	public void sendGo()
+	{
+		sendCommand(GO);
+	}
+	
+	public void sendStop()
+	{
+		sendCommand(STOP);
+	}
 	
 	public void sendHelp()
 	{
@@ -81,11 +91,6 @@ public class UdpCommandConnectionObserver
 	public void sendStatus()
 	{
 		sendCommand(STATUS);
-	}
-	
-	public void sendGo()
-	{
-		sendCommand(GO);
 	}
 	
 	public void sendIpConfig()
