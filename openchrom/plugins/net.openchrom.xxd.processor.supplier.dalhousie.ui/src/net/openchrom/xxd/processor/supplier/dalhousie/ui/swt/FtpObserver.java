@@ -67,7 +67,7 @@ public class FtpObserver
 		
 		/* check if there is a file */
 		if(newestFtpFile != null)
-		{			
+		{
 			/* check if the server has a newer file */
 			if( currentChrom == null  || FileHelper.isNewerFileName( currentChrom.getName(), newestFtpFile ) )
 			{
@@ -123,6 +123,8 @@ public class FtpObserver
 	{
 		Collection<String> files;
 		String chromName = null;
+		
+		boolean doneFileFound = false;
 
 		try 
 		{
@@ -139,7 +141,10 @@ public class FtpObserver
 				{
 					/* If there is one return it */
 					chromName = file;
-					break;
+				}
+				else if(file.equals(".done"))
+				{
+					doneFileFound = true;
 				}
 			}
 			
@@ -149,6 +154,12 @@ public class FtpObserver
 		catch(IOException e)
 		{
 			logger.warn(e);
+		}
+		
+		/* check if a done file was found to validate the chromatogram */
+		if(!doneFileFound)
+		{
+			chromName = null;
 		}
 		
 		return chromName;
