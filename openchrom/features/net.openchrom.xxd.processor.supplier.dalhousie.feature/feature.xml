@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.xxd.processor.supplier.dalhousie.feature"
-      label="Dalhousie Underwater Experiments"
+      label="Compact GC"
       version="1.0.0.qualifier"
       provider-name="OpenChrom">
 

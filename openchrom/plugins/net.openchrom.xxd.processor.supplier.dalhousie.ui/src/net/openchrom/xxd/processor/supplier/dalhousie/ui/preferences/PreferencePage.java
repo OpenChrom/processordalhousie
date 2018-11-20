@@ -26,7 +26,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	public PreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Dalhousie Underwater Experiments");
+		setDescription("Compact GC");
 	}
 
 	/**
