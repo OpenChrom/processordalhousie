@@ -141,6 +141,18 @@ public class FileHelper
 		return fileName;
 	}
 	
+	public static String getFolderNameFromPath(String pathName)
+	{
+		String folderName = null;
+		
+		if(pathName != null)
+		{
+			folderName = Paths.get(pathName).getParent().getFileName().toString();
+		}
+
+		return folderName;
+	}
+	
 	public static boolean isValidChromName(String str)
 	{
 		return str.matches(FILE_REGEX);
@@ -150,4 +162,48 @@ public class FileHelper
 	{
 		return str.matches(FOLDER_REGEX);
 	}
+	
+	public static boolean isValidFile(String file)
+	{
+		String ext = getExtension(file);
+		
+		return ext.equals("txt") || ext.equals("xy") || ext.equals("ini");
+	}
+	
+	public static File getChromFromFolder(String chromDirStr)
+	{
+		File chromDir;
+		File chrom = null;
+		
+		chromDir = new File(chromDirStr);
+		
+		for( File file : chromDir.listFiles() )
+		{
+			if(isValidChromName(file.getName()))
+			{
+				chrom = file;
+				break;
+			}
+		}
+		
+			
+		return chrom;
+	}
+	
+	
+	private static String getExtension(String fileName)
+	{
+		int i;
+		String ext = "";
+		
+		i = fileName.lastIndexOf('.');
+		
+		if (i > 0)
+		{
+		    ext = fileName.substring(i+1);
+		}
+		
+		return ext;
+	}
+	
 }

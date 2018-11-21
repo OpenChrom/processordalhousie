@@ -11,7 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.dalhousie.preferences;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -156,6 +158,21 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void setPathFiles(String pathFiles) {
 
 		setFilterPath(P_PATH_FILES, pathFiles);
+	}
+	
+	public static List<String> getAllSettings()
+	{
+		List<String> lines = new ArrayList<>();
+
+		lines.add( "#REFRESH_RATE=" 	+ getRefreshRate() );
+		lines.add( "#IP_ADDR=" 			+ getServer() );
+		lines.add( "#FTP_USER=" 		+ getFtpUser() );
+		lines.add( "#FTP_PORT=" 		+ getFtpPort() );
+		lines.add( "#FTP_PASSWORD=" 	+ getFtpPass() );
+		lines.add( "#FTP_DIRECTORY=" 	+ getFtpDir() );
+		lines.add( "#UDP_CLI_PORT=" 	+ getUdpCliPort() );
+		
+		return lines;
 	}
 
 	private static String getFilterPath(String key, String def) {

@@ -13,7 +13,12 @@ package net.openchrom.xxd.processor.supplier.dalhousie.ui.swt;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 
@@ -23,6 +28,8 @@ import net.openchrom.xxd.processor.supplier.dalhousie.ui.internal.provider.FtpCl
 
 public class FtpObserver 
 {	
+	private static final String OC_SETTINGS_FILE_NAME = "oc_settings.txt";
+	
 	private static final Logger logger = Logger.getLogger(FtpObserver.class);
 	
 	private FtpClient ftpConnection;
@@ -57,10 +64,10 @@ public class FtpObserver
 	/*
 	 * checks if there is a newer file on the FTP server, if there is it downloads it
 	 */
-	public boolean downloadNewFtpFiles(File localDir, File currentChrom) throws IOException
+	public String downloadNewFtpFiles(File localDir, File currentChrom) throws IOException
 	{
 		String newestFtpFile;
-		boolean returnVal = false;
+		String localChromDir = null;
 
 		/* get the newest file name from FTP */
 		newestFtpFile = getNewestFileOnFTP();
@@ -71,14 +78,43 @@ public class FtpObserver
 			/* check if the server has a newer file */
 			if( currentChrom == null  || FileHelper.isNewerFileName( currentChrom.getName(), newestFtpFile ) )
 			{
+				/* set the local directory to download files into */
+				localChromDir = localDir.getPath() + "\\" + FileHelper.getFolderNameFromPath(newestFtpFile);
+				
 				/* if it does download it */
-				ftpConnection.downloadFile( newestFtpFile, localDir.getPath() + '\\' + FileHelper.getFileNameFromPathName(newestFtpFile) );
-				/* indicate a file was downloaded */
-				returnVal = true;
+				downloadFtpDirectory( FileHelper.getFolderNameFromPath(newestFtpFile),  localChromDir);
+				
+				/* Save the local setting to the directory */
+				saveOcSettings( localChromDir );
+			}
+		}
+
+		return localChromDir;
+	}
+	
+	private void downloadFtpDirectory(String ftpDir, String localDir) throws IOException
+	{
+		Collection<String> fileList;
+		
+		/* move into directory */
+		ftpConnection.changeDir(ftpDir);
+		
+		/* list files in the directory */
+		fileList = ftpConnection.listFiles();
+		
+		/* create the directory in the local filesystem */
+		new File(localDir).mkdirs();
+		
+		/* download all the files in the directory */
+		for(String file : fileList)
+		{
+			if(FileHelper.isValidFile(file))
+			{
+				ftpConnection.downloadFile(file, localDir + "\\" + file);
 			}
 		}
 		
-		return returnVal;
+		ftpConnection.changeDir("..");
 	}
 	
 	/*  
@@ -126,7 +162,7 @@ public class FtpObserver
 		
 		boolean doneFileFound = false;
 
-		try 
+		try
 		{
 			/* move into directory */
 			ftpConnection.changeDir(folderName);
@@ -163,5 +199,24 @@ public class FtpObserver
 		}
 		
 		return chromName;
+	}
+	
+	private void saveOcSettings(String dirPath)
+	{
+		List<String> lines;
+		Path file;
+
+		lines = PreferenceSupplier.getAllSettings();
+		
+		file = Paths.get(dirPath + "\\" + OC_SETTINGS_FILE_NAME);
+		
+		try
+		{
+			Files.write(file, lines, Charset.forName("UTF-8"));
+		}
+		catch(IOException e)
+		{
+			logger.warn(e);
+		}
 	}
 }
