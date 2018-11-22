@@ -86,13 +86,13 @@ public class CommandConnectionUI
 		composite.setLayout(new GridLayout(4, true));
 		
 		/* Go button */
-		createStandardButton("Go", 			()->commandConnection.sendGo(), 		composite);
+		createStandardButton("Go", 			()->commandConnection.sendGoContinuous(), 	composite);
 		/* Ip-config */
-		createStandardButton("Stop", 		()->commandConnection.sendStop(), 		composite);
+		createStandardButton("Stop", 		()->commandConnection.sendStop(), 			composite);
 		/* Help button */
-		createStandardButton("Help", 		()->commandConnection.sendHelp(), 		composite);
+		createStandardButton("Help", 		()->commandConnection.sendHelp(), 			composite);
 		/* status button */
-		createStandardButton("Status", 		()->commandConnection.sendStatus(), 	composite);
+		createStandardButton("Status", 		()->commandConnection.sendStatus(), 		composite);
 		/* Add a custom command section */
 		createCustomCommandSection(composite);
 	}

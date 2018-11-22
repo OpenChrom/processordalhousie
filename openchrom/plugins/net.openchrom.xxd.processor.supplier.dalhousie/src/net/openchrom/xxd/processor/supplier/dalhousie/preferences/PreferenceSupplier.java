@@ -62,6 +62,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String UDP_CLI_PORT_LABEL	= "UDP CLI Port";
 	public static final int UDP_CLI_PORT_DEFAULT	= 5001;
 	
+	public static final String CHROMATOGRAM_TIME_NAME	= "ChromatogramTime";
+	public static final String CHROMATOGRAM_TIME_LABEL 	= "Chromatogram Time (s)";
+	public static final int CHROMATOGRAM_TIME_DEFAULT 	= 30;
+	
 	
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -105,6 +109,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(FTP_DIR_NAME, FTP_DIR_DEFAULT);
 		/* UDP CLI Port */
 		defaultValues.put(UDP_CLI_PORT_NAME, Integer.toString(UDP_CLI_PORT_DEFAULT));
+		/* Chromatogram time */
+		defaultValues.put(CHROMATOGRAM_TIME_NAME, Integer.toString(CHROMATOGRAM_TIME_DEFAULT));
 		
 		return defaultValues;
 	}
@@ -154,6 +160,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	{
 		return Integer.parseInt( getFilterPath(UDP_CLI_PORT_NAME, Integer.toString(UDP_CLI_PORT_DEFAULT)) );
 	}
+	
+	public static int getChromatogramTime()
+	{
+		return Integer.parseInt( getFilterPath(CHROMATOGRAM_TIME_NAME, Integer.toString(CHROMATOGRAM_TIME_DEFAULT)) );
+	}
 
 	public static void setPathFiles(String pathFiles) {
 
@@ -171,6 +182,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		lines.add( "#FTP_PASSWORD=" 	+ getFtpPass() );
 		lines.add( "#FTP_DIRECTORY=" 	+ getFtpDir() );
 		lines.add( "#UDP_CLI_PORT=" 	+ getUdpCliPort() );
+		lines.add( "#CHROMATOGRAM_TIME="+ getChromatogramTime() );
 		
 		return lines;
 	}

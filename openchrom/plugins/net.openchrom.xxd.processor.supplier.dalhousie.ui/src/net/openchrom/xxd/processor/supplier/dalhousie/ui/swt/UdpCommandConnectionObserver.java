@@ -70,12 +70,17 @@ public class UdpCommandConnectionObserver
 	
 	public void stop()
 	{
-		
+		//TODO: stop UDP connection
 	}
 	
 	public void sendGo()
 	{
 		sendCommand(GO);
+	}
+	
+	public void sendGoContinuous()
+	{
+		sendCommand( GO + " " + PreferenceSupplier.getChromatogramTime() );
 	}
 	
 	public void sendStop()

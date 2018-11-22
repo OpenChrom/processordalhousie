@@ -79,6 +79,11 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new IntegerFieldEditor(PreferenceSupplier.UDP_CLI_PORT_NAME,
 										PreferenceSupplier.UDP_CLI_PORT_LABEL,
 										getFieldEditorParent() ));
+		
+		/* Chromatogram Time */
+		addField(new IntegerFieldEditor(PreferenceSupplier.CHROMATOGRAM_TIME_NAME,
+										PreferenceSupplier.CHROMATOGRAM_TIME_LABEL,
+										getFieldEditorParent() ));
 	}
 
 	/*
