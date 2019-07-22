@@ -13,6 +13,7 @@ package net.openchrom.xxd.processor.supplier.dalhousie.ui.swt;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierEditorSupport;
 import org.eclipse.swt.widgets.Display;
@@ -51,7 +52,7 @@ public class FileObserver {
 	}
 	
 	/*
-	 * stops the thread running the file observer
+	 * stops the thread running the file observer and closes the FTP connection
 	 */
 	public void stopObservation() 
 	{
@@ -60,6 +61,16 @@ public class FileObserver {
 			/* stop the thread */
 			thread.interrupt();
 			thread = null;
+			
+			/* close the connection */
+			try
+			{
+				ftpObserver.close();
+			}
+			catch(IOException e)
+			{
+				logger.warn(e);
+			}
 		}
 	}
 
@@ -110,6 +121,8 @@ public class FileObserver {
 			}
 		});
 		
+		
+		
 		/* Start the thread */
 		thread.start();
 		
@@ -120,7 +133,7 @@ public class FileObserver {
 	/* 
 	 * Runs the file observer:
 	 * - download any newer chromatogram from the FTP server to the local directory
-	 * - check for any new chromatogram in the local file direcrtory, 
+	 * - check for any new chromatogram in the local file directory, 
 	 * - if there is one display it,
 	 * - sleep for specified amount of time
 	 * - repeat
@@ -128,6 +141,8 @@ public class FileObserver {
 	private void runFileObserver( File localFileDir, int refreshRate ) throws InterruptedException
 	{
 		File newChrom;
+		String newChromDir = null;
+		
 		currentChrom = null;
 	
 		while(true)
@@ -135,63 +150,46 @@ public class FileObserver {
 			/* download any newer files from the FTP server */
 			try 
 			{
-				ftpObserver.downloadNewFtpFiles(localFileDir, currentChrom);
+				newChromDir = ftpObserver.downloadNewFtpFiles(localFileDir, currentChrom);
 			}
 			catch(IOException e) 
 			{
-				logger.warn(e);// TODO: warn user, probably end thread or something
-			}
-			
-			/* get the newest chromatogram in the directory, checked against the current one */
-			newChrom = getNewestFile( localFileDir, currentChrom );
-			
-			/* check if a newer chromatogram was found */
-			if( newChrom != null && newChrom != currentChrom )
-			{
-				/* open the newest chromatogram */
-				openNewChrom(newChrom);
-				
-				//TODO close old chromatogram
-				
-				/* set the current chromatogram to the one just opened */
-				currentChrom = newChrom;
-			}
-			
-			/* sleep for specified amount of time */
-			Thread.sleep( (long) refreshRate );
-			
-		}
-	}
-	
-	/*
-	 * Return the newest file in the directory
-	 * 
-	 * directory: the directory to search in
-	 * newestFile: the current newest file (null permitted)
-	 * 
-	 * returns: the newest file in the directory (null if no file was found)
-	 */
-	private File getNewestFile(File directory, File newestFile)
-	{
-		/* check all the files in the directory */
-		for(File file : directory.listFiles()) 
-		{
-			//TODO: check for directories, supplierEditorSupport.isSupplierFileDirectory(file)
-			
-			/* check the file is acceptable */
-			if(supplierEditorSupport.isMatchMagicNumber(file) && supplierEditorSupport.isSupplierFile(file))
-			{
-				/* check if the file in newer */
-				if( newestFile == null || FileHelper.isNewerFile( newestFile, file) )
+				/* try to reconnect */
+				try
 				{
-					newestFile = file;
+					ftpObserver.open();
+				}
+				catch(IOException e1)
+				{
+					logger.warn(e);
+					logger.warn(e1);
+					// TODO: user alert 
 				}
 			}
+			
+			if(newChromDir != null)
+			{
+				
+				newChrom = FileHelper.getChromFromFolder(newChromDir);
+
+				if( newChrom != null )
+				{
+					/* open the newest chromatogram */
+					openNewChrom(newChrom);
+					
+					//TODO close old chromatogram
+					
+					/* set the current chromatogram to the one just opened */
+					currentChrom = newChrom;
+				}
+				
+				/* sleep for specified amount of time */
+				Thread.sleep( (long) refreshRate );
+				
+			}
 		}
-		
-		/* return what was found, if anything */
-		return newestFile;
 	}
+
 	
 	/*
 	 * opens the file as a chromatogram

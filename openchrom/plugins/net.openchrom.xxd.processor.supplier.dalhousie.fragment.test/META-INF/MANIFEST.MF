@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Dalhousie Underwater Experiments (Test)
+Bundle-Name: Compact GC (Test)
 Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.dalhousie.fragment.test
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: OpenChrom

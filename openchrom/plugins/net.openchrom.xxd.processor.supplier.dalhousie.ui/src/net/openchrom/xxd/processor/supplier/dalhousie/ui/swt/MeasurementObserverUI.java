@@ -151,7 +151,7 @@ public class MeasurementObserverUI {
 				}
 				//
 				IPreferencePage preferencePage = new PreferencePage();
-				preferencePage.setTitle("Dalhousie Underwater Experiment");
+				preferencePage.setTitle("Compact GC");
 				//
 				PreferenceManager preferenceManager = new PreferenceManager();
 				preferenceManager.addToRoot(new PreferenceNode("1", preferencePage));
