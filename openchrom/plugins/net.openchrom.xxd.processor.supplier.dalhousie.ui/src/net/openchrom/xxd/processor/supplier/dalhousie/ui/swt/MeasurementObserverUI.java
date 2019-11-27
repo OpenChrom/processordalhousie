@@ -145,7 +145,7 @@ public class MeasurementObserverUI {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if( fileObserver.isObservationRunning() ) {
+				if(fileObserver.isObservationRunning()) {
 					fileObserver.stopObservation();
 					updateWidgets();
 				}
@@ -270,7 +270,7 @@ public class MeasurementObserverUI {
 			if(directory.exists()) {
 				for(File file : directory.listFiles()) {
 					if(supplierEditorSupport.isMatchMagicNumber(file)) {
-						if(supplierEditorSupport.isSupplierFile(file) || supplierEditorSupport.isSupplierFileDirectory(file)) {
+						if(supplierEditorSupport.isSupplierFile(file)) {
 							files.add(file);
 						}
 					}
