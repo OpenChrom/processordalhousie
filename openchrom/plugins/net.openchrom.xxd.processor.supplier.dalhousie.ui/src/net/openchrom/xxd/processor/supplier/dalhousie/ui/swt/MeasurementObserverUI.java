@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.processor.supplier.dalhousie.preferences.PreferenceSupplier;
+import net.openchrom.xxd.processor.supplier.dalhousie.ui.Activator;
 import net.openchrom.xxd.processor.supplier.dalhousie.ui.preferences.PreferencePage;
 
 public class MeasurementObserverUI {
@@ -52,7 +53,7 @@ public class MeasurementObserverUI {
 	private FileListUI fileListUI;
 	private Button buttonObserving;
 	//
-	private ISupplierEditorSupport supplierEditorSupport = new SupplierEditorSupport(DataType.CSD);
+	private ISupplierEditorSupport supplierEditorSupport = new SupplierEditorSupport(DataType.CSD, () -> Activator.getEclipseContext());
 	private FileObserver fileObserver = new FileObserver(supplierEditorSupport);
 
 	public MeasurementObserverUI(Composite parent) {
