@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Compact GC (UI)
 Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.dalhousie.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.xxd.processor.supplier.dalhousie.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,

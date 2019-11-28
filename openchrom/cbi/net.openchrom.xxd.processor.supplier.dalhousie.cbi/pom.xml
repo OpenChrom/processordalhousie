@@ -4,25 +4,46 @@
   <!--
 	PARENT
   -->
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>master</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
+          <parent>
+              <groupId>net.openchrom</groupId>
+              <artifactId>master</artifactId>
+              <version>1.4.0-SNAPSHOT</version>
+          </parent>
   <!--
 	ARTIFACT
   -->
   <groupId>net.openchrom</groupId>
-  <artifactId>parent</artifactId>
+<artifactId>processordalhousie</artifactId>
   <packaging>pom</packaging>
   <!--
 	DESCRIPTION
   --> 
-  <name>dalhousie</name>
+<name>OpenChrom::processordalhousie::Aggregator</name>
   <description>
-	This is the Dalhousie University extension.
+	The OpenChrom Dalhousie data processor.
   </description>
+  <!--
+	LICENSES
+  -->
+  <licenses>
+    <license>
+      <name>EPL</name>
+    </license> 
+  </licenses>
+  <!--
+	DEVELOPERS
+  -->
+  <developers>
+    <developer>
+      <id>eselmeister</id>
+<name>OpenChrom::processordalhousie::Aggregator</name>
+      <email>philip.wenig [at] openchrom.net</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
   <!--
 	MODULES
   -->
