@@ -1,56 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <!--
-	PARENT
-  -->
-          <parent>
-              <groupId>net.openchrom</groupId>
-              <artifactId>master</artifactId>
-              <version>1.4.0-SNAPSHOT</version>
-          </parent>
-  <!--
-	ARTIFACT
-  -->
-  <groupId>net.openchrom</groupId>
-<artifactId>processordalhousie</artifactId>
-  <packaging>pom</packaging>
-  <!--
-	DESCRIPTION
-  --> 
-<name>OpenChrom::processordalhousie::Aggregator</name>
-  <description>
+	<modelVersion>4.0.0</modelVersion>
+	<!-- PARENT -->
+	<parent>
+		<groupId>net.openchrom</groupId>
+		<artifactId>master</artifactId>
+		<version>1.4.0-SNAPSHOT</version>
+		<relativePath>../../../../openchrom/openchrom</relativePath>
+	</parent>
+	<!-- ARTIFACT -->
+	<groupId>net.openchrom</groupId>
+	<artifactId>processordalhousie</artifactId>
+	<packaging>pom</packaging>
+	<!-- DESCRIPTION -->
+	<name>OpenChrom::processordalhousie::Aggregator</name>
+	<description>
 	The OpenChrom Dalhousie data processor.
   </description>
-  <!--
-	LICENSES
-  -->
-  <licenses>
-    <license>
-      <name>EPL</name>
-    </license> 
-  </licenses>
-  <!--
-	DEVELOPERS
-  -->
-  <developers>
-    <developer>
-      <id>eselmeister</id>
-<name>OpenChrom::processordalhousie::Aggregator</name>
-      <email>philip.wenig [at] openchrom.net</email>
-      <timezone>+1</timezone>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-  </developers>
-  <!--
-	MODULES
-  -->
-  <modules>
-    <module>../../plugins/net.openchrom.xxd.processor.supplier.dalhousie</module>
-    <module>../../plugins/net.openchrom.xxd.processor.supplier.dalhousie.ui</module>
-    <module>../../features/net.openchrom.xxd.processor.supplier.dalhousie.feature</module>
-    <!--<module>../../plugins/net.openchrom.xxd.processor.supplier.dalhousie.fragment.test</module>-->
-  </modules>
+	<!-- LICENSES -->
+	<licenses>
+		<license>
+			<name>EPL</name>
+		</license>
+	</licenses>
+	<!-- DEVELOPERS -->
+	<developers>
+		<developer>
+			<id>eselmeister</id>
+			<name>OpenChrom::processordalhousie::Aggregator</name>
+			<email>philip.wenig [at] openchrom.net</email>
+			<timezone>+1</timezone>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<!-- MODULES -->
+	<modules>
+		<module>../../plugins/net.openchrom.xxd.processor.supplier.dalhousie</module>
+		<module>../../plugins/net.openchrom.xxd.processor.supplier.dalhousie.ui</module>
+		<module>../../features/net.openchrom.xxd.processor.supplier.dalhousie.feature</module>
+		<!--<module>../../plugins/net.openchrom.xxd.processor.supplier.dalhousie.fragment.test</module> -->
+	</modules>
 </project>
