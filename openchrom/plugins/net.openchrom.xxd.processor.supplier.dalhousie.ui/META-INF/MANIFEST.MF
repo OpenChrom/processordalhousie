@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.xxd.processor.supplier.dalhousie.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: Compact GC (UI)
 Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.dalhousie.ui;singleton:=true
