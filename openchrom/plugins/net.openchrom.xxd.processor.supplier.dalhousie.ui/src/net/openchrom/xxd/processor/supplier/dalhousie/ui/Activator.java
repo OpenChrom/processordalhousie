@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,10 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.dalhousie.ui;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
-import org.eclipse.e4.core.contexts.EclipseContextFactory;
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.osgi.framework.BundleContext;
 
 import net.openchrom.xxd.processor.supplier.dalhousie.preferences.PreferenceSupplier;
@@ -39,13 +36,5 @@ public class Activator extends AbstractActivatorUI {
 	public static AbstractActivatorUI getDefault() {
 
 		return plugin;
-	}
-
-	public static IEclipseContext getEclipseContext() {
-
-		BundleContext bundleContext = plugin.getBundle().getBundleContext();
-		IEclipseContext eclipseContext = EclipseContextFactory.getServiceContext(bundleContext);
-		eclipseContext.set(Logger.class, null);
-		return eclipseContext;
 	}
 }
